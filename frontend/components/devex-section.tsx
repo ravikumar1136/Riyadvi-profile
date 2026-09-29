@@ -1,0 +1,257 @@
+"use client"
+
+import { useState, useEffect } from "react"
+
+type CodeLineData = {
+  type: string
+  text?: string
+  key?: string
+  val?: string
+  after?: string
+  keyword2?: string
+  keyword3?: string
+  fn?: string
+  args?: string
+  string?: string
+}
+
+const STEPS: { num: string; title: string; desc: string; file: string; lang: string; code: CodeLineData[] }[] = [
+  {
+    num: "01",
+    title: "Discover",
+    desc: "Understand goals, users, and constraints",
+    file: "discovery/brief.md",
+    lang: "brief",
+    code: [
+      { type: "comment", text: "# Start with the business context" },
+      { type: "prop", key: "business_goal", val: "'grow customer engagement'" },
+      { type: "prop", key: "users", val: "'customers and internal teams'" },
+      { type: "prop", key: "constraints", val: "'time, budget, existing systems'" },
+      { type: "gap" },
+      { type: "output", text: "✓ Goals and needs understood" },
+      { type: "output", text: "✓ Opportunity ready to shape" },
+    ],
+  },
+  {
+    num: "02",
+    title: "Plan",
+    desc: "Turn findings into clear priorities",
+    file: "roadmap/priorities.md",
+    lang: "roadmap",
+    code: [
+      { type: "comment", text: "# Focus the first release" },
+      { type: "prop", key: "priority_01", val: "'the core customer journey'" },
+      { type: "prop", key: "priority_02", val: "'connect essential systems'" },
+      { type: "prop", key: "success_measure", val: "'agreed with your team'" },
+      { type: "gap" },
+      { type: "output", text: "✓ Scope aligned with goals" },
+      { type: "output", text: "✓ Next steps made clear" },
+    ],
+  },
+  {
+    num: "03",
+    title: "Create",
+    desc: "Design and build around real needs",
+    file: "product/experience.ts",
+    lang: "product",
+    code: [
+      { type: "comment", text: "// Bring the product to life" },
+      { type: "plain", text: "design the key experience" },
+      { type: "plain", text: "build the agreed capabilities" },
+      { type: "plain", text: "connect the right systems" },
+      { type: "gap" },
+      { type: "comment", text: "// Keep quality in the process" },
+      { type: "plain", text: "review, test, and refine" },
+    ],
+  },
+  {
+    num: "04",
+    title: "Evolve",
+    desc: "Launch, learn, and keep improving",
+    file: "delivery/next-steps.md",
+    lang: "delivery",
+    code: [
+      { type: "comment", text: "# Prepare for a confident launch" },
+      { type: "command", text: "review the release together" },
+      { type: "gap" },
+      { type: "output", text: "  Confirm priorities" },
+      { type: "output", text: "  Prepare the team" },
+      { type: "output", text: "  Plan what comes next" },
+      { type: "gap" },
+      { type: "success", text: "✓ Ready for the next step" },
+      { type: "url", text: "  → Keep improving what matters" },
+    ],
+  },
+]
+
+function CodeLine({ line }: { line: CodeLineData }) {
+  if (line.type === "gap") return <div className="h-3" />
+  if (line.type === "comment") return <div className="text-[#9ca3af]">{line.text}</div>
+  if (line.type === "output") return <div className="text-[#6b7280]">{line.text}</div>
+  if (line.type === "success") return <div className="text-[#16a34a]">{line.text}</div>
+  if (line.type === "url") return <div className="text-[#2563eb] underline">{line.text}</div>
+  if (line.type === "command") return (
+    <div>
+      <span className="text-[#16a34a]">$ </span>
+      <span className="text-[#111]">{line.text}</span>
+    </div>
+  )
+  if (line.type === "plain") return <div className="text-[#111]">{line.text}</div>
+  if (line.type === "prop") return (
+    <div>
+      <span className="text-[#2563eb]">{line.key}</span>
+      <span className="text-[#111]">: </span>
+      <span className="text-[#16a34a]">{line.val}</span>
+      <span className="text-[#111]">,</span>
+    </div>
+  )
+  if (line.type === "keyword") return (
+    <div>
+      <span className="text-[#7c3aed]">{line.text}</span>
+      <span className="text-[#111]">{line.after}</span>
+      <span className="text-[#7c3aed]">{line.keyword2}</span>
+      {line.keyword3 && <span className="text-[#7c3aed]">{line.keyword3}</span>}
+      {line.fn && <span className="text-[#b45309]">{line.fn}</span>}
+      {line.args && <span className="text-[#111]">{line.args}</span>}
+      {line.string && <span className="text-[#16a34a]">{line.string}</span>}
+    </div>
+  )
+  return null
+}
+
+export function DevExSection() {
+  const [active, setActive] = useState(0)
+  const [visible, setVisible] = useState(true)
+
+  function selectStep(i: number) {
+    if (i === active) return
+    setVisible(false)
+    setTimeout(() => {
+      setActive(i)
+      setVisible(true)
+    }, 180)
+  }
+
+  // Auto-advance every 3s
+  useEffect(() => {
+    const t = setInterval(() => {
+      setVisible(false)
+      setTimeout(() => {
+        setActive(prev => (prev + 1) % STEPS.length)
+        setVisible(true)
+      }, 180)
+    }, 3200)
+    return () => clearInterval(t)
+  }, [])
+
+  const step = STEPS[active]
+
+  return (
+    <section id="devex" className="py-32 px-6 md:px-12 lg:px-20 border-t border-black/[0.06]">
+      <div className="max-w-6xl mx-auto">
+        <div className="mb-16">
+          <div className="mt-4 inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-black/[0.05] border border-black/[0.06] text-[10px] tracking-widest text-black/40 uppercase">
+            How We Work
+          </div>
+          <h2 className="mt-5 text-4xl md:text-5xl font-light tracking-tight leading-[1.05]">
+            Thoughtful from kickoff.<br />Committed through launch.
+          </h2>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-3 items-stretch">
+
+          <div className="flex flex-col gap-3">
+            {STEPS.map((s, i) => (
+              <button
+                key={s.num}
+                onClick={() => selectStep(i)}
+                className="flex-1 text-left rounded-2xl border transition-all duration-200 p-6 group"
+                style={{
+                  background: active === i ? "rgba(0,0,0,0.04)" : "rgba(255,255,255,0.7)",
+                  borderColor: active === i ? "rgba(0,0,0,0.12)" : "rgba(0,0,0,0.06)",
+                  boxShadow: active === i
+                    ? "0 1px 3px rgba(0,0,0,0.06)"
+                    : "0 1px 2px rgba(0,0,0,0.03)",
+                }}
+              >
+                <div className="flex gap-4 items-start">
+                  <div
+                    className="flex items-center justify-center w-8 h-8 rounded-lg text-xs font-light shrink-0 transition-colors duration-200"
+                    style={{
+                      background: active === i ? "rgba(0,0,0,0.08)" : "rgba(0,0,0,0.04)",
+                      color: active === i ? "rgba(0,0,0,0.7)" : "rgba(0,0,0,0.35)",
+                    }}
+                  >
+                    {s.num}
+                  </div>
+                  <div className="min-w-0">
+                    <p
+                      className="text-sm font-light transition-colors duration-200"
+                      style={{ color: active === i ? "rgba(0,0,0,0.8)" : "rgba(0,0,0,0.5)" }}
+                    >
+                      {s.title}
+                    </p>
+                    <p className="text-xs mt-0.5" style={{ color: "rgba(0,0,0,0.28)" }}>{s.desc}</p>
+                  </div>
+                </div>
+              </button>
+            ))}
+          </div>
+
+
+          <div
+            className="lg:col-span-2 rounded-2xl border border-black/[0.06] p-8 flex flex-col"
+            style={{
+              background: "rgba(255,255,255,0.7)",
+              boxShadow: "0 1px 3px rgba(0,0,0,0.04)",
+              minHeight: "360px",
+            }}
+          >
+
+            <div className="flex items-center justify-between mb-5 shrink-0">
+              <div
+                className="text-[10px] tracking-widest uppercase transition-all duration-200"
+                style={{
+                  opacity: visible ? 1 : 0,
+                  filter: visible ? "blur(0px)" : "blur(4px)",
+                  transition: "opacity 200ms ease, filter 200ms ease",
+                  color: "rgba(0,0,0,0.3)",
+                }}
+              >
+                {step.file}
+              </div>
+              <div className="flex gap-1.5">
+                {[0, 1, 2].map(d => (
+                  <div
+                    key={d}
+                    className="w-2 h-2 rounded-full transition-all duration-300"
+                    style={{
+                      background: d === active % 3 ? "rgba(0,0,0,0.25)" : "rgba(0,0,0,0.08)",
+                    }}
+                  />
+                ))}
+              </div>
+            </div>
+
+
+            <div className="flex-1 rounded-xl p-6 overflow-hidden" style={{ background: "rgba(0,0,0,0.03)", border: "1px solid rgba(0,0,0,0.06)" }}>
+              <div
+                className="font-mono text-[12px] leading-6"
+                style={{
+                  opacity: visible ? 1 : 0,
+                  filter: visible ? "blur(0px)" : "blur(6px)",
+                  transform: visible ? "translateY(0)" : "translateY(6px)",
+                  transition: "opacity 220ms cubic-bezier(0.16,1,0.3,1), filter 220ms cubic-bezier(0.16,1,0.3,1), transform 220ms cubic-bezier(0.16,1,0.3,1)",
+                }}
+              >
+                {step.code.map((line, i) => (
+                  <CodeLine key={i} line={line} />
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  )
+}

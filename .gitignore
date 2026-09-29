@@ -15,3 +15,8 @@ node_modules
 .next/
 .DS_Store
 .vercel
+backend/.env
+backend/__pycache__/
+backend/**/__pycache__/
+backend/*.py[cod]
+backend/db.sqlite3
