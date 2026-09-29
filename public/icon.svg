@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 180" fill="none">
+  <defs>
+    <linearGradient id="gold" x1="26" y1="30" x2="154" y2="157" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#fff0a0"/>
+      <stop offset=".38" stop-color="#e1ad42"/>
+      <stop offset=".72" stop-color="#f7d978"/>
+      <stop offset="1" stop-color="#8b542c"/>
+    </linearGradient>
+    <radialGradient id="shade" cx="0" cy="0" r="1" gradientTransform="matrix(0 180 -180 0 90 0)" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#252525"/>
+      <stop offset="1" stop-color="#080808"/>
+    </radialGradient>
+    <filter id="texture" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency=".075" numOctaves="3" seed="8"/>
+      <feColorMatrix values=".25 0 0 0 0 0 .25 0 0 0 0 0 .25 0 0 0 0 0 .2 0"/>
+      <feBlend in="SourceGraphic" mode="soft-light"/>
+    </filter>
+  </defs>
+  <rect width="180" height="180" rx="28" fill="url(#shade)"/>
+  <rect width="180" height="180" rx="28" fill="#777" opacity=".2" filter="url(#texture)"/>
+  <path d="M42 52h78c18 0 29 13 29 28 0 9-4 16-12 22l-28 22h28l18 20h-45L79 91h40c8 0 13-4 13-11 0-6-5-10-13-10H42V52Z" fill="url(#gold)"/>
+  <path d="m40 72 63 69v-22L60 72H40Z" fill="url(#gold)"/>
+  <circle cx="48" cy="27" r="9" fill="url(#gold)"/>
+  <path d="m43 38-11 16 7 17 10 2 6-18 12 9 7-7-17-17-14-2Z" fill="url(#gold)"/>
+  <path d="m40 69-17 11-13-2-2 7 19 4 20-10M54 48l-2-13-7-5-4 6 5 9" stroke="url(#gold)" stroke-linecap="round" stroke-linejoin="round" stroke-width="7"/>
+</svg>
